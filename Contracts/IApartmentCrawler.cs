@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FrankfurtWohnungsSuchApp
+namespace FrankfurtWohnungsSuchApp.Contracts;
+
+public interface IApartmentCrawler
 {
-    public interface IApartmentCrawler
-    {
-        Task<List<IApartmentData>> GetFlats();
-    }
+    Task<List<IApartmentData>> GetFlats();
 }

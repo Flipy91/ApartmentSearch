@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
+using FrankfurtWohnungsSuchApp.Contracts;
+using FrankfurtWohnungsSuchApp.Implementation;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -14,7 +16,7 @@ namespace FrankfurtWohnungsSuchApp
     public class FfmFlatNotifator
     {
         [FunctionName("FfmFlatNotifatorFunction")]
-        public async Task Run([TimerTrigger("*/5 * * * * *")]TimerInfo myTimer, ILogger log, ExecutionContext context)
+        public async Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log, ExecutionContext context)
         {
 
             var config = new ConfigurationBuilder()
@@ -67,9 +69,9 @@ namespace FrankfurtWohnungsSuchApp
 
         private static async Task<ScraperRunResult> CreateScraperResult(ScraperConfiguration x) => new ScraperRunResult(await x.Crawler.GetFlats(), x.Provider, x.Id);
 
-        record ScraperConfiguration(IApartmentCrawler Crawler, string Provider, Func<IApartmentData,string> Id);
-        record ScraperRunResult(List<IApartmentData> Result, string Provider, Func<IApartmentData, string> Id);
-        record TelegramConfig()
+        private record ScraperConfiguration(IApartmentCrawler Crawler, string Provider, Func<IApartmentData,string> Id);
+        private record ScraperRunResult(List<IApartmentData> Result, string Provider, Func<IApartmentData, string> Id);
+        private record TelegramConfig
         {
             public string BotKey { get; set; }
             public long ChatId { get; set; }
